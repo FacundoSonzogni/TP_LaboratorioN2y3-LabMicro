@@ -24,8 +24,8 @@ SPDX-License-Identifier: MIT
 
 /* === Headers files inclusions ==================================================================================== */
 
-#include "bar.h"
-#include "foo.h"
+#include "alumno.h"
+
 
 /* === Macros definitions ========================================================================================== */
 

@@ -18,13 +18,13 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 SPDX-License-Identifier: MIT
 *********************************************************************************************************************/
 
-/** @file foo.c
- ** @brief Código fuente del Módulo foo
+/** @file alumno.c
+ ** @brief Código fuente del Módulo alumno
  **/
 
 /* === Headers files inclusions ==================================================================================== */
 
-#include "foo.h"
+#include "alumno.h"
 
 /* === Macros definitions ========================================================================================== */
 
