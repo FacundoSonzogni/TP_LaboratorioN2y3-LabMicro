@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
 /* === Headers files inclusions ==================================================================================== */
 
 #include "alumno.h"
+#include <stdio.h>
 
 /* === Macros definitions ========================================================================================== */
 
@@ -32,12 +33,87 @@ SPDX-License-Identifier: MIT
 
 /* === Private function declarations =============================================================================== */
 
+/**
+ * @brief Devuelve una cadena en formato JSON del tipo "campo":"valor", (con la Coma al final)
+ *
+ * @param campo Cadena de caracteres que se quiere colocar como nombre del campo
+ * @param valor Cadena que representa el valor del campo que se desea colocar
+ * @param buffer Cadena en la cual se escribe el resultado de la serialización
+ * @param size Tamaño disponible para escribir la cadena
+ * @return int Longitud de la cadena generada, o -1 si el espacio no es suficiente
+ */
+static int SerializarCadena(char campo[], const char valor[], char buffer[], uint32_t size);
+
+/**
+ * @brief Devuelve una cadena en formato JSON del tipo "campo":valor
+ *
+ * @param campo Cadena de caracteres que se quiere colocar como nombre del campo
+ * @param valor Entero que se desea colocar como valor para el campo
+ * @param buffer Cadena en la cual se escribe el resultado de la serialización
+ * @param size Tamaño disponible para escribir la cadena
+ * @return int Longitud de la cadena generada, o -1 si el espacio no es suficiente
+ */
+static int SerializarEntero(char campo[], int valor, char buffer[], uint32_t size);
+
 /* === Private variable definitions ================================================================================ */
 
 /* === Public variable definitions ================================================================================= */
 
 /* === Private function definitions ================================================================================ */
 
+static int SerializarCadena(char campo[], const char valor[], char buffer[], uint32_t size) {
+    return snprintf(buffer, size, "\"%s\":\"%s\",", campo, valor);
+}
+
+static int SerializarEntero(char campo[], int valor, char buffer[], uint32_t size) {
+    return snprintf(buffer, size, "\"%s\":%i", campo, valor);
+}
+
 /* === Public function definitions ================================================================================= */
+
+int Serializar(const alumno_t* alumno, char buffer[], uint32_t size) {
+    int escritos;
+    int resultado;
+
+    buffer[0] = '{';
+    buffer = buffer + 1;
+    escritos = 1;
+
+    resultado = SerializarCadena("nombre", alumno->nombre, buffer, size - escritos);
+    if (resultado < 0) {
+        return -1;
+    }
+
+    buffer = buffer + resultado;
+    escritos = escritos + resultado;
+    resultado = escritos;
+
+    escritos = escritos + SerializarCadena("apellido", alumno->apellido, buffer, size - escritos);
+    if (escritos < 0) {
+        return -1;
+    }
+
+    buffer = buffer + (escritos - resultado);
+    resultado = escritos;
+
+    escritos = escritos + SerializarEntero("documento", alumno->documento, buffer, size - escritos);
+    if (escritos < 0) {
+        return -1;
+    }
+
+    buffer = buffer + (escritos - resultado);
+
+    if (escritos >= (size - 1)) {
+        return -1;
+    } else {
+        *buffer = '}';
+        buffer++;
+        *buffer = '\0';
+
+        escritos = escritos + 2;
+    }
+
+    return escritos;
+}
 
 /* === End of documentation ======================================================================================== */

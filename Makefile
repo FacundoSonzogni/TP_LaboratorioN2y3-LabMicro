@@ -11,13 +11,10 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 -include $(OBJ_DIR)/*.d
 
-all: $(OBJ_FILES)
-	@if [ ! -d $(BIN_DIR) ]; then mkdir -p $(BIN_DIR); fi
-	@if [ ! -d $(DOC_DIR) ]; then mkdir -p $(DOC_DIR); fi
+all: $(OBJ_FILES) | $(BIN_DIR)
 	@gcc $(OBJ_FILES) -o $(BIN_DIR)/a.exe -mconsole
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@echo "Compilando $< a $@"
 	@gcc -c $< -o $@ $(foreach DIR, $(INC_DIR), -I $(INC_DIR)) -MMD 
 
@@ -27,6 +24,12 @@ clean:
 info:
 	@echo "OBJ_FILES = $(OBJ_FILES)"
 
-doc:
-	@if [ ! -d $(DOC_DIR) ]; then mkdir -p $(DOC_DIR); fi  
+doc: | $(DOC_DIR)
 	@doxygen Doxyfile
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+$(DOC_DIR):
+	mkdir -p $(DOC_DIR)

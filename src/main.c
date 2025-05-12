@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
 /* === Headers files inclusions ==================================================================================== */
 
 #include "alumno.h"
-
+#include <stdio.h>
 
 /* === Macros definitions ========================================================================================== */
 
@@ -35,6 +35,8 @@ SPDX-License-Identifier: MIT
 
 /* === Private variable definitions ================================================================================ */
 
+static const struct alumno_s Alumno_YO = {.nombre = "Facundo", .apellido = "Sonzogni", .documento = 44703205};
+
 /* === Public variable definitions ================================================================================= */
 
 /* === Private function definitions ================================================================================ */
@@ -42,6 +44,19 @@ SPDX-License-Identifier: MIT
 /* === Public function definitions ================================================================================= */
 
 int main(void) {
+    char buffer[100];
+    int resultado;
+
+    resultado = Serializar(&Alumno_YO, buffer, sizeof(buffer));
+
+    if (resultado > 0) {
+        printf("Resultado Serializado: %s\n", buffer);
+        printf("Cantidad de caracteres escritos: %i", resultado);
+    } else {
+        printf("Error al serializar\n");
+    }
+
+    return 0;
 }
 
 /* === End of documentation ======================================================================================== */

@@ -23,9 +23,14 @@ SPDX-License-Identifier: MIT
 
 /** @file alumno.h
  ** @brief Declaraciones del Módulo alumno
+ **
+ ** @addtogroup Alumno Modulo de Gestion de Alumnos
+ ** @{
  **/
 
 /* === Headers files inclusions ==================================================================================== */
+
+#include <stdint.h>
 
 /* === Header for C++ compatibility ================================================================================ */
 
@@ -37,14 +42,32 @@ extern "C" {
 
 /* === Public data type declarations =============================================================================== */
 
+//! Estructura que representa a un alumno
+typedef struct alumno_s {
+    char nombre[20];    //!< Nombre del alumno
+    char apellido[20];  //!< Apellido del alumno
+    uint32_t documento; //!< Documento del alumno
+} alumno_t;
+
 /* === Public variable declarations ================================================================================ */
 
 /* === Public function declarations ================================================================================ */
+
+/**
+ * @brief Función que permite serializar los datos de un alumno en formato JSON
+ *
+ * @param alumno Puntero a la estructura que contiene los datos del alumno
+ * @param buffer Cadena de caracteres en la que se almacenan los datos en formato JSON
+ * @param size Espacio disponible para la cadena de caracteres
+ * @return int Longitud de la cadena generada, o -1 si el espacio no es suficiente
+ */
+int Serializar(const alumno_t* alumno, char buffer[], uint32_t size);
 
 /* === End of conditional blocks =================================================================================== */
 
 #ifdef __cplusplus
 }
 #endif
+//! @}
 
 #endif /* ALUMNO_H */
