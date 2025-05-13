@@ -26,10 +26,18 @@ SPDX-License-Identifier: MIT
 
 #include "alumno.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /* === Macros definitions ========================================================================================== */
 
 /* === Private data type declarations ============================================================================== */
+
+struct alumno_s{
+    char nombre[20];
+    char apellido[20];
+    int documento;
+};
 
 /* === Private function declarations =============================================================================== */
 
@@ -42,7 +50,7 @@ SPDX-License-Identifier: MIT
  * @param size Tamaño disponible para escribir la cadena
  * @return int Longitud de la cadena generada, o -1 si el espacio no es suficiente
  */
-static int SerializarCadena(char campo[], const char valor[], char buffer[], uint32_t size);
+static int SerializarCadena(char campo[], char valor[], char buffer[], uint32_t size);
 
 /**
  * @brief Devuelve una cadena en formato JSON del tipo "campo":valor
@@ -61,7 +69,7 @@ static int SerializarEntero(char campo[], int valor, char buffer[], uint32_t siz
 
 /* === Private function definitions ================================================================================ */
 
-static int SerializarCadena(char campo[], const char valor[], char buffer[], uint32_t size) {
+static int SerializarCadena(char campo[], char valor[], char buffer[], uint32_t size) {
     return snprintf(buffer, size, "\"%s\":\"%s\",", campo, valor);
 }
 
@@ -71,7 +79,19 @@ static int SerializarEntero(char campo[], int valor, char buffer[], uint32_t siz
 
 /* === Public function definitions ================================================================================= */
 
-int Serializar(const alumno_t* alumno, char buffer[], uint32_t size) {
+alumno_t CrearAlumno(char nombre[], char apellido[], int documento){
+    alumno_t self = malloc(sizeof(struct alumno_s));
+
+    if(self != NULL){
+        strncpy(self->nombre, nombre, sizeof(self->nombre)-1);
+        strncpy(self->apellido, apellido, sizeof(self->apellido)-1);
+        self->documento = documento;
+    }
+
+    return self;
+}
+
+int SerializarAlumno(alumno_t alumno, char buffer[], uint32_t size) {
     int escritos;
     int resultado;
 
