@@ -47,15 +47,20 @@ int main(void) {
 
     alumno_t Alumno_YO = CrearAlumno("Facundo", "Sonzogni", 44703205);
 
-    resultado = SerializarAlumno(Alumno_YO, buffer, sizeof(buffer));
+    if (Alumno_YO != NULL){
+        resultado = SerializarAlumno(Alumno_YO, buffer, sizeof(buffer));
 
-    if (resultado > 0) {
-        printf("Resultado Serializado: %s\n", buffer);
-        printf("Cantidad de caracteres escritos: %i", resultado);
-    } else {
-        printf("Error al serializar\n");
+        if (resultado > 0) {
+            printf("Resultado Serializado: %s\n", buffer);
+            printf("Cantidad de caracteres escritos: %i", resultado);
+        } else {
+            printf("Error al serializar\n");
+        }
+    }else {
+        printf("No se pudo crear al alumno\n");
     }
 
+    
     return 0;
 }
 

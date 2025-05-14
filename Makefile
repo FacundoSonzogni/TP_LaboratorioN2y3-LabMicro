@@ -6,6 +6,8 @@ OBJ_DIR = $(OUT_DIR)/obj
 BIN_DIR = $(OUT_DIR)/bin
 DOC_DIR = $(OUT_DIR)/doc
 
+CFLAGS = -Wall -Wextra -Werror -std=c99
+
 SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
@@ -16,7 +18,7 @@ all: $(OBJ_FILES) | $(BIN_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@echo "Compilando $< a $@"
-	@gcc -c $< -o $@ $(foreach DIR, $(INC_DIR), -I $(INC_DIR)) -MMD 
+	@gcc $(CFLAGS) -c $< -o $@ $(foreach DIR, $(INC_DIR), -I $(INC_DIR)) -MMD
 
 clean:
 	@if [ -d $(OUT_DIR) ]; then rm -rf $(OUT_DIR); fi
